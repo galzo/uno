@@ -3,12 +3,15 @@
   "module": "app.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch run app.ts"
+    "dev": "bun --watch run ./src/app.ts"
   },
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "junk": "^4.0.1"
   }
 }
