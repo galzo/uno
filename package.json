@@ -1,0 +1,14 @@
+{
+  "name": "uno",
+  "module": "app.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch run app.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
