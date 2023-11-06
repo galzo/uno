@@ -1,5 +1,5 @@
 import { Stats } from "fs";
-import { FileDetails } from "./folderScanner.types";
+import { FileDetails } from "./folderScannerService.types";
 
 export const buildFileVersionUID = (stats: Stats) => {
   const createdTime = stats.birthtimeMs;
