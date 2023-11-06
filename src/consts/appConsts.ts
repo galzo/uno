@@ -1,5 +1,5 @@
 export const AppConsts = {
-  unoMetaFolder: "uno",
+  unoMetaFolder: ".uno",
   folderMappingFile: "mapping.json",
   appConfigFile: "config.json",
 };

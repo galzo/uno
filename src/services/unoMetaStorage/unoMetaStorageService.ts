@@ -3,6 +3,7 @@ import { AppConfig } from "../config/configService.types";
 import { AppConsts } from "../../consts/appConsts";
 import { writeJsonFile } from "../filesStorage/fileStorageService";
 import { FileDetails } from "../folderScan/folderScannerService.types";
+import { hideSync } from "hidefile";
 
 export class UnoMetaStorageService {
   private metaFolderPath: string;
@@ -23,5 +24,6 @@ export class UnoMetaStorageService {
     if (isFolderExist) return;
 
     await mkdir(this.metaFolderPath);
+    hideSync(this.metaFolderPath);
   };
 }
