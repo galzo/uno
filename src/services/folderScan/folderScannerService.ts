@@ -1,9 +1,10 @@
 import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
-import { isNotJunk } from "junk";
+import { isJunk, isNotJunk } from "junk";
 import { buildFileDetails, buildFileUID, buildFileVersionUID } from "./folderScannerService.utils";
 import { FileDetails } from "./folderScannerService.types";
 import { AppConfig } from "../config/configService.types";
+import { isHiddenSync } from "hidefile";
 
 export class FolderScannerService {
   private config: AppConfig;
@@ -27,6 +28,11 @@ export class FolderScannerService {
 
     for (const fileName of validFilesNames) {
       const filePath = `${folderPath}/${fileName}`;
+
+      // Skip processing any hidden files, this includes our very own .uno meta folder
+      const isHidden = isHiddenSync(filePath);
+      if (isHidden) continue;
+
       const fileStats = await stat(filePath);
       const fileDetails = buildFileDetails(fileName, filePath, fileStats);
 
@@ -36,6 +42,7 @@ export class FolderScannerService {
       files.push(fileDetails);
     }
 
+    console.log(files);
     return files;
   };
 }
