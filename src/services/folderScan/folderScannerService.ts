@@ -1,15 +1,19 @@
 import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
-import { buildFileDetails, buildFileUID, buildFileVersionUID } from "./folderScannerService.utils";
+import { buildFileDetails } from "./folderScannerService.utils";
 import { FileDetails } from "./folderScannerService.types";
 import { AppConfig } from "../config/configService.types";
 import { isHiddenSync } from "hidefile";
+import { CryptoHasher } from "bun";
+import { FileIdService } from "../fileId/fileIdService";
 
 export class FolderScannerService {
   private config: AppConfig;
+  private fileIdService: FileIdService;
   constructor(config: AppConfig) {
     this.config = config;
+    this.fileIdService = new FileIdService();
   }
 
   public scanAppFolder = async (): Promise<FileDetails[]> => {
@@ -34,7 +38,7 @@ export class FolderScannerService {
       if (isHidden) continue;
 
       const fileStats = await stat(filePath);
-      const fileDetails = buildFileDetails(fileName, filePath, fileStats);
+      const fileDetails = buildFileDetails(fileName, filePath, fileStats, this.fileIdService);
 
       const shouldScanAsFolder = fileDetails.isFolder && !fileDetails.isSymlink;
       fileDetails.children = shouldScanAsFolder ? await this.scanFolder(fileDetails.path) : [];
