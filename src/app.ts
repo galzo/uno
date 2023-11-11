@@ -9,5 +9,5 @@ const configService = await ConfigService.getInstance();
 const scannerService = new FolderScannerService(configService.config);
 const storageService = new UnoMetaStorageService(configService.config);
 
-const folderMapping = await scannerService.scanAppFolder();
-await storageService.storeUnoFolderMapping(folderMapping);
+const folderRecords = await scannerService.scanAppFolder();
+await storageService.storeUnoFolderRecords(folderRecords);

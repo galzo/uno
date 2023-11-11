@@ -1,19 +1,20 @@
 import { CryptoHasher } from "bun";
 import { Stats } from "fs";
+import { FileUID, FileVersionUID } from "./fileIdGeneratorService.types";
 
-export class FileIdService {
+export class FileIdGeneratorService {
   private cryptoHasher: CryptoHasher;
 
   constructor() {
     this.cryptoHasher = new CryptoHasher("sha256");
   }
 
-  public buildFileUID = (fileName: string, filePath: string, fileStats: Stats) => {
+  public buildFileUID = (fileName: string, filePath: string, fileStats: Stats): FileUID => {
     const fileRepr = this._buildFileUniqueRepresentation(fileName, filePath, fileStats);
     return this._hashContent(fileRepr);
   };
 
-  public buildFileVersionUID = (fileName: string, fileStats: Stats) => {
+  public buildFileVersionUID = (fileName: string, fileStats: Stats): FileVersionUID => {
     const versionRepr = this._buildFileVersionRepresentation(fileName, fileStats);
     return this._hashContent(versionRepr);
   };

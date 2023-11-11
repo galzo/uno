@@ -1,11 +1,20 @@
-export interface FileDetails {
+import { FileUID, FileVersionUID } from "../fileIdGenerator/fileIdGeneratorService.types";
+
+export interface FolderScanResults {
+  files: FileRecord[];
+}
+
+export interface FileRecord {
+  id: FileUID;
+  versionId: FileVersionUID;
   name: string;
   path: string;
   isFolder: boolean;
   isFile: boolean;
   isSymlink: boolean;
-  versionUID: string;
   size: number;
-  fileUID: string;
-  children?: FileDetails[];
+  createdDate: Date;
+  updatedDate: Date;
+
+  children?: FileRecord[];
 }

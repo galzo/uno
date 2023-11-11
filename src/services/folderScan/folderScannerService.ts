@@ -2,31 +2,31 @@ import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
 import { buildFileDetails } from "./folderScannerService.utils";
-import { FileDetails } from "./folderScannerService.types";
+import { FileRecord } from "./folderScannerService.types";
 import { AppConfig } from "../config/configService.types";
 import { isHiddenSync } from "hidefile";
 import { CryptoHasher } from "bun";
-import { FileIdService } from "../fileId/fileIdService";
+import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorService";
 
 export class FolderScannerService {
   private config: AppConfig;
-  private fileIdService: FileIdService;
+  private fileIdService: FileIdGeneratorService;
   constructor(config: AppConfig) {
     this.config = config;
-    this.fileIdService = new FileIdService();
+    this.fileIdService = new FileIdGeneratorService();
   }
 
-  public scanAppFolder = async (): Promise<FileDetails[]> => {
+  public scanAppFolder = async (): Promise<FileRecord[]> => {
     console.log("scanning folder...");
     const rootFolder = this.config.appFolderLocation;
-    const folderMapping = await this.scanFolder(rootFolder);
-    console.log(`Finished folder scanning. found ${folderMapping.length} entities`);
+    const folderRecords = await this.scanFolder(rootFolder);
+    console.log(`Finished folder scanning`);
 
-    return folderMapping;
+    return folderRecords;
   };
 
-  private scanFolder = async (folderPath: string): Promise<FileDetails[]> => {
-    const files: FileDetails[] = [];
+  private scanFolder = async (folderPath: string): Promise<FileRecord[]> => {
+    const files: FileRecord[] = [];
     const fileNames = await readdir(folderPath);
     const validFilesNames = fileNames.filter(isNotJunk);
 

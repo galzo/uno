@@ -1,22 +1,24 @@
 import { Stats } from "fs";
-import { FileDetails } from "./folderScannerService.types";
+import { FileRecord } from "./folderScannerService.types";
 import { CryptoHasher } from "bun";
-import { FileIdService } from "../fileId/fileIdService";
+import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorService";
 
 export const buildFileDetails = (
-  fileName: string,
-  filePath: string,
-  fileStats: Stats,
-  fileIdentitifer: FileIdService
-): FileDetails => {
+  name: string,
+  path: string,
+  stats: Stats,
+  idGenerator: FileIdGeneratorService
+): FileRecord => {
   return {
-    name: fileName,
-    path: filePath,
-    isFolder: fileStats.isDirectory(),
-    isFile: fileStats.isFile(),
-    isSymlink: fileStats.isSymbolicLink(),
-    size: fileStats.size,
-    versionUID: fileIdentitifer.buildFileVersionUID(fileName, fileStats),
-    fileUID: fileIdentitifer.buildFileUID(fileName, filePath, fileStats),
+    name: name,
+    path: path,
+    isFolder: stats.isDirectory(),
+    isFile: stats.isFile(),
+    isSymlink: stats.isSymbolicLink(),
+    size: stats.size,
+    versionId: idGenerator.buildFileVersionUID(name, stats),
+    id: idGenerator.buildFileUID(name, path, stats),
+    createdDate: stats.birthtime,
+    updatedDate: stats.mtime,
   };
 };

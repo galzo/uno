@@ -2,8 +2,8 @@ import { exists, mkdir } from "fs/promises";
 import { AppConfig } from "../config/configService.types";
 import { AppConsts } from "../../consts/appConsts";
 import { writeJsonFile } from "../filesStorage/fileStorageService";
-import { FileDetails } from "../folderScan/folderScannerService.types";
 import { hideSync } from "hidefile";
+import { FileRecord } from "../folderScan/folderScannerService.types";
 
 export class UnoMetaStorageService {
   private metaFolderPath: string;
@@ -12,7 +12,7 @@ export class UnoMetaStorageService {
     this.metaFolderPath = `${config.appFolderLocation}/${AppConsts.unoMetaFolder}`;
   }
 
-  public storeUnoFolderMapping = async <T>(mapping: FileDetails[]): Promise<void> => {
+  public storeUnoFolderRecords = async <T>(mapping: FileRecord[]): Promise<void> => {
     console.log("Storing folder mapping to uno meta...");
     await this.initializeUnoMetaFolder();
     await writeJsonFile(this.metaFolderPath, AppConsts.folderMappingFile, mapping);

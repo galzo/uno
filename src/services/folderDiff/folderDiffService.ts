@@ -1,5 +1,7 @@
-import { FileDetails } from "../folderScan/folderScannerService.types";
+import { BaseFileRecord } from "../folderScan/folderScannerService.types";
 
-export const compareFolderMappings = (thisMapping: FileDetails[], otherMapping: FileDetails[]) => {
-    
+export const compareFolderMappings = (thisMapping: BaseFileRecord[], otherMapping: BaseFileRecord[]) => {
+  for (const file of thisMapping) {
+    const hasFileInOther = otherMapping.includes();
+  }
 };
