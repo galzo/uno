@@ -1,10 +1,6 @@
 import { FileUID, FileVersionUID } from "../fileIdGenerator/fileIdGeneratorService.types";
 
-export interface FolderScanResults {
-  files: FileRecord[];
-}
-
-export interface FileRecord {
+export interface BaseFileRecord {
   id: FileUID;
   versionId: FileVersionUID;
   name: string;
@@ -15,6 +11,8 @@ export interface FileRecord {
   size: number;
   createdDate: Date;
   updatedDate: Date;
+}
 
-  children?: FileRecord[];
+export interface FolderScannerRecord extends BaseFileRecord {
+  children?: FolderScannerRecord[];
 }

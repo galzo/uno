@@ -2,7 +2,7 @@ import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
 import { buildFileDetails } from "./folderScannerService.utils";
-import { FileRecord } from "./folderScannerService.types";
+import { FolderScannerRecord } from "./folderScannerService.types";
 import { AppConfig } from "../config/configService.types";
 import { isHiddenSync } from "hidefile";
 import { CryptoHasher } from "bun";
@@ -16,7 +16,7 @@ export class FolderScannerService {
     this.fileIdService = new FileIdGeneratorService();
   }
 
-  public scanAppFolder = async (): Promise<FileRecord[]> => {
+  public scanAppFolder = async (): Promise<FolderScannerRecord[]> => {
     console.log("scanning folder...");
     const rootFolder = this.config.appFolderLocation;
     const folderRecords = await this.scanFolder(rootFolder);
@@ -25,8 +25,8 @@ export class FolderScannerService {
     return folderRecords;
   };
 
-  private scanFolder = async (folderPath: string): Promise<FileRecord[]> => {
-    const files: FileRecord[] = [];
+  private scanFolder = async (folderPath: string): Promise<FolderScannerRecord[]> => {
+    const files: FolderScannerRecord[] = [];
     const fileNames = await readdir(folderPath);
     const validFilesNames = fileNames.filter(isNotJunk);
 
