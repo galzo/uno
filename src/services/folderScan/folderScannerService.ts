@@ -1,8 +1,8 @@
 import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
-import { buildFileDetails } from "./folderScannerService.utils";
-import { FolderScannerRecord } from "./folderScannerService.types";
+import { buildFileRecord } from "./folderScannerService.utils";
+import { FileRecord } from "./folderScannerService.types";
 import { AppConfig } from "../config/configService.types";
 import { isHiddenSync } from "hidefile";
 import { CryptoHasher } from "bun";
@@ -16,7 +16,7 @@ export class FolderScannerService {
     this.fileIdService = new FileIdGeneratorService();
   }
 
-  public scanAppFolder = async (): Promise<FolderScannerRecord[]> => {
+  public scanAppFolder = async (): Promise<FileRecord[]> => {
     console.log("scanning folder...");
     const rootFolder = this.config.appFolderLocation;
     const folderRecords = await this.scanFolder(rootFolder);
@@ -25,8 +25,8 @@ export class FolderScannerService {
     return folderRecords;
   };
 
-  private scanFolder = async (folderPath: string): Promise<FolderScannerRecord[]> => {
-    const files: FolderScannerRecord[] = [];
+  private scanFolder = async (folderPath: string): Promise<FileRecord[]> => {
+    const files: FileRecord[] = [];
     const fileNames = await readdir(folderPath);
     const validFilesNames = fileNames.filter(isNotJunk);
 
@@ -38,15 +38,14 @@ export class FolderScannerService {
       if (isHidden) continue;
 
       const fileStats = await stat(filePath);
-      const fileDetails = buildFileDetails(fileName, filePath, fileStats, this.fileIdService);
+      const fileRecord = buildFileRecord(fileName, filePath, fileStats, this.fileIdService);
 
-      const shouldScanAsFolder = fileDetails.isFolder && !fileDetails.isSymlink;
-      fileDetails.children = shouldScanAsFolder ? await this.scanFolder(fileDetails.path) : [];
+      const shouldScanAsFolder = fileRecord.isFolder && !fileRecord.isSymlink;
+      fileRecord.children = shouldScanAsFolder ? await this.scanFolder(fileRecord.path) : [];
 
-      files.push(fileDetails);
+      files.push(fileRecord);
     }
 
-    console.log(files);
     return files;
   };
 }

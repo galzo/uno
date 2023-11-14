@@ -1,33 +1,42 @@
 import { FileUID } from "../fileIdGenerator/fileIdGeneratorService.types";
-import { FolderScannerRecord } from "../folderScan/folderScannerService.types";
-import { FileMappingRecord } from "./folderDiffService.types";
+import { FileRecord } from "../folderScan/folderScannerService.types";
+import { FileFlatRecord, FolderMapping } from "./folderDiffService.types";
 
-const resolveRecordChildIds = (record: FolderScannerRecord) => {
-  if (!record.isFolder || !record.children) return [];
-
-  return record.children.map((childRecord) => childRecord.id);
+const _resolveFileChildIds = (file: FileRecord): FileUID[] => {
+  if (!file.isFolder || !file.children) return [];
+  return file.children.map((childRecord) => childRecord.id);
 };
 
-const buildFileMappingRecord = (fileRecord: FolderScannerRecord, parentFolderId?: FileUID): FileMappingRecord => {
+const _buildFileFlatRecord = (fileRecord: FileRecord, parentFolderId?: FileUID): FileFlatRecord => {
   return {
     ...fileRecord,
     parentId: parentFolderId,
-    directChildIds: resolveRecordChildIds(fileRecord),
+    directChildIds: _resolveFileChildIds(fileRecord),
   };
 };
 
-export const buildSpreadFolderMapping = (folderRecords: FolderScannerRecord[], parentFolderId?: FileUID) => {
-  const mappingRecords: FileMappingRecord[] = [];
+const _flattenFileRecords = (fileRecords: FileRecord[], parentFolderId?: FileUID) => {
+  const flattenedRecords: FileFlatRecord[] = [];
 
-  for (const fileRecord of folderRecords) {
-    const mappingRecord = buildFileMappingRecord(fileRecord);
-    mappingRecords.push(mappingRecord);
+  for (const file of fileRecords) {
+    const flatteneRec = _buildFileFlatRecord(file);
+    flattenedRecords.push(flatteneRec);
 
-    if (fileRecord.isFolder && fileRecord.children) {
-      const childRecords = buildSpreadFolderMapping(fileRecord.children, fileRecord.id);
-      mappingRecords.push(...childRecords);
+    if (file.isFolder && file.children) {
+      const childRecords = _flattenFileRecords(file.children, file.id);
+      flattenedRecords.push(...childRecords);
     }
   }
 
-  return mappingRecords;
+  return flattenedRecords;
+};
+
+export const buildFolderMappingFromRecords = (fileRecords: FileRecord[]) => {
+  const flattenedFileRecords = _flattenFileRecords(fileRecords);
+  return flattenedFileRecords.reduce<FolderMapping>((res, file) => {
+    return {
+      ...res,
+      [file.id]: file,
+    };
+  }, {});
 };

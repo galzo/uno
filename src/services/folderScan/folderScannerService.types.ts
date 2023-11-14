@@ -13,6 +13,6 @@ export interface BaseFileRecord {
   updatedDate: Date;
 }
 
-export interface FolderScannerRecord extends BaseFileRecord {
-  children?: FolderScannerRecord[];
+export interface FileRecord extends BaseFileRecord {
+  children?: FileRecord[];
 }
