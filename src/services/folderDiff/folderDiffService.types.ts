@@ -7,3 +7,10 @@ export interface FileFlatRecord extends BaseFileRecord {
 }
 
 export type FolderMapping = Record<FileUID, FileFlatRecord>;
+
+export interface SyncAction {
+  fileId: FileUID;
+  action: SyncActionType;
+}
+
+export type SyncActionType = "add" | "delete" | "update" | "noAction";
