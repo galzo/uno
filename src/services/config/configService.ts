@@ -16,7 +16,7 @@ export class ConfigService {
   }
 
   private static async initializeInstance() {
-    const config = await readJsonFile<AppConfig>(`./${AppConsts.appConfigFile}`);
+    const config = await readJsonFile<AppConfig>(`./${AppConsts.unoConfigFile}`);
     const serviceInstance = new ConfigService(config);
     ConfigService.instance = serviceInstance;
 

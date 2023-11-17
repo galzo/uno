@@ -1,3 +1,4 @@
 export interface AppConfig {
-    appFolderLocation: string;
+    serverDataFolder: string;
+    clientDataFolder: string;
 }

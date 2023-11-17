@@ -1,3 +1,4 @@
 {
-  "appFolderLocation": "/Users/galzo/Desktop/testDir"
+  "serverDataFolder": "/Users/galzo/Desktop/uno/serverDir",
+  "clientDataFolder": "/Users/galzo/Desktop/uno/clientDir"
 }
