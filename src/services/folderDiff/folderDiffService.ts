@@ -1,33 +1,47 @@
+import { Optional } from "../../types/common";
 import { BaseFileRecord } from "../folderScan/folderScannerService.types";
 import { FileFlatRecord, FolderMapping, SyncAction, SyncActionType } from "./folderDiffService.types";
 
-export const compareFolderMappings = (thisMapping: FolderMapping, targetMapping: FolderMapping) => {
-  const upsertActions = Object.values(thisMapping).map((file) => {
-    return { id: file.id, action: _resolveSyncAction(file, targetMapping) };
-  });
+export const generateFolderSyncActions = (source: FolderMapping, target: FolderMapping) => {
+  const upsertActions = _createUpsertActions(source, target);
+  const deleteActions = _createDeleteActions(source, target);
+  return [...upsertActions, ...deleteActions];
 };
 
-const _createUpsertActions = (thisMapping: FolderMapping, targetMapping: FolderMapping): SyncAction[] => {
-  const upsertActions = Object.values(thisMapping).map((file) => {
-    return { fileId: file.id, action: _resolveSyncAction(file, targetMapping) };
-  });
+const _createUpsertActions = (source: FolderMapping, target: FolderMapping): SyncAction[] => {
+  const upsertActions = [];
+
+  for (const file of Object.values(source)) {
+    const actionType = _resolveUpsertAction(file, target);
+    if (!actionType) continue;
+
+    const action = { fileId: file.id, action: actionType };
+    upsertActions.push(action);
+  }
 
   return upsertActions;
 };
 
-const _createDeleteActions = (thisMapping: FolderMapping, targetMapping: FolderMapping): SyncAction[] => {
-  const thisFileIds = Object.keys(thisMapping);
-  const targetFileIds = Object.keys(targetMapping);
+const _createDeleteActions = (source: FolderMapping, target: FolderMapping): SyncAction[] => {
+  const sourceFileIds = Object.keys(source);
+  const targetFileIds = Object.keys(target);
 
-  return [];
+  return targetFileIds
+    .filter((id) => !sourceFileIds.includes(id))
+    .map((idToDelete) => {
+      return {
+        fileId: idToDelete,
+        action: "delete",
+      };
+    });
 };
 
-const _resolveSyncAction = (file: FileFlatRecord, targetMapping: FolderMapping): SyncActionType => {
-  const fileInTarget = targetMapping[file.id];
+const _resolveUpsertAction = (file: FileFlatRecord, targetFolder: FolderMapping): Optional<SyncActionType> => {
+  const fileInTarget = targetFolder[file.id];
 
   const shouldCreateFile = !fileInTarget;
   if (shouldCreateFile) return "add";
 
   const fileVersionsMatch = file.versionId === fileInTarget.versionId;
-  return fileVersionsMatch ? "noAction" : "update";
+  return fileVersionsMatch ? null : "update";
 };

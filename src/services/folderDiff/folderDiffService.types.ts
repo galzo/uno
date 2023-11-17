@@ -13,4 +13,4 @@ export interface SyncAction {
   action: SyncActionType;
 }
 
-export type SyncActionType = "add" | "delete" | "update" | "noAction";
+export type SyncActionType = "add" | "delete" | "update";
