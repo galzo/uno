@@ -3,14 +3,14 @@ import { FolderScannerService } from "../services/folderScan/folderScannerServic
 import { UnoStorageService } from "../services/unoStorage/unoStorageService";
 
 export class UnoServer {
-  private config: ConfigService;
-  private folderScanner: FolderScannerService;
-  private storage: UnoStorageService;
+  private configService: ConfigService;
+  private scannerService: FolderScannerService;
+  private storageService: UnoStorageService;
 
   constructor(config: ConfigService, folderScanner: FolderScannerService, storage: UnoStorageService) {
-    this.config = config;
-    this.folderScanner = folderScanner;
-    this.storage = storage;
+    this.configService = config;
+    this.scannerService = folderScanner;
+    this.storageService = storage;
   }
 }
 
