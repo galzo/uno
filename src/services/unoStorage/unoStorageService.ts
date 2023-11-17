@@ -22,9 +22,9 @@ export class UnoStorageService {
   };
 
   public storeUnoData = async <T>(data: FileRecord[]): Promise<void> => {
-    console.log("Storing folder mapping to uno meta...");
+    console.log("Storing folder data...");
     await createFolderIfNotExists(this.dataFolderPath, true);
     await writeJsonFile(this.dataFolderPath, AppConsts.unoDataFile, data);
-    console.log("Successfully stored mapping");
+    console.log("Successfully stored data");
   };
 }

@@ -1,16 +1,14 @@
 import { AppConsts } from "./consts/appConsts";
-import { initServer } from "./server/server";
+import { UnoServer } from "./server/server";
 import { ConfigService } from "./services/configService/configService";
 import { writeJsonFile } from "./services/filesStorage/fileStorageService";
 import { FolderScannerService } from "./services/folderScan/folderScannerService";
 import { UnoStorageService } from "./services/unoStorage/unoStorageService";
 
-const generateUnoFolderData = async () => {
-  console.log("Starting run");
+const runServer = async () => {
   const configService = await ConfigService.getInstance();
-  const scannerService = new FolderScannerService(configService.config);
-  const storageService = new UnoStorageService(configService.config);
-
-  const folderData = await scannerService.scanAppFolder();
-  await storageService.storeUnoData(folderData);
+  const server = new UnoServer(configService.config);
+  await server.initialize();
 };
+
+await runServer();

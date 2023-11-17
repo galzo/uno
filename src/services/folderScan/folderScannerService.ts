@@ -17,10 +17,10 @@ export class FolderScannerService {
   }
 
   public scanAppFolder = async (): Promise<FileRecord[]> => {
-    console.log("scanning folder...");
+    console.log("Scanning app folder data...");
     const rootFolder = this.config.serverDataFolder;
     const folderRecords = await this.scanFolder(rootFolder);
-    console.log(`Finished folder scanning`);
+    console.log(`Finished app folder data scanning`);
 
     return folderRecords;
   };
