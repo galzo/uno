@@ -1,5 +1,5 @@
 import { exists, mkdir } from "fs/promises";
-import { AppConfig } from "../config/configService.types";
+import { AppConfig } from "../configService/configService.types";
 import { AppConsts } from "../../consts/appConsts";
 import { readJsonFile, writeJsonFile } from "../filesStorage/fileStorageService";
 import { hideSync } from "hidefile";

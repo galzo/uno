@@ -1,5 +1,6 @@
 import { AppConsts } from "./consts/appConsts";
-import { ConfigService } from "./services/config/configService";
+import { initServer } from "./server/server";
+import { ConfigService } from "./services/configService/configService";
 import { writeJsonFile } from "./services/filesStorage/fileStorageService";
 import { FolderScannerService } from "./services/folderScan/folderScannerService";
 import { UnoStorageService } from "./services/unoStorage/unoStorageService";
@@ -13,4 +14,3 @@ const generateUnoFolderData = async () => {
   const folderData = await scannerService.scanAppFolder();
   await storageService.storeUnoData(folderData);
 };
-

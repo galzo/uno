@@ -3,7 +3,7 @@ import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
 import { buildFileRecord } from "./folderScannerService.utils";
 import { FileRecord } from "./folderScannerService.types";
-import { AppConfig } from "../config/configService.types";
+import { AppConfig } from "../configService/configService.types";
 import { isHiddenSync } from "hidefile";
 import { CryptoHasher } from "bun";
 import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorService";
