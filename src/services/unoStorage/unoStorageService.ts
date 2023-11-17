@@ -11,7 +11,7 @@ export class UnoStorageService {
   private backupFolderPath: string;
 
   constructor(config: AppConfig) {
-    const unoFolderPath = `${config.appFolderLocation}/${AppConsts.unoDataFolder}`;
+    const unoFolderPath = `${config.serverDataFolder}/${AppConsts.unoDataFolder}`;
     this.dataFolderPath = unoFolderPath;
     this.backupFolderPath = `${unoFolderPath}/${AppConsts.unoBackupFolder}`;
   }
@@ -21,10 +21,10 @@ export class UnoStorageService {
     return await readJsonFile(`${this.dataFolderPath}/${AppConsts.unoDataFile}`);
   };
 
-  public storeUnoData = async <T>(mapping: FileRecord[]): Promise<void> => {
+  public storeUnoData = async <T>(data: FileRecord[]): Promise<void> => {
     console.log("Storing folder mapping to uno meta...");
     await createFolderIfNotExists(this.dataFolderPath, true);
-    await writeJsonFile(this.dataFolderPath, AppConsts.unoDataFile, mapping);
+    await writeJsonFile(this.dataFolderPath, AppConsts.unoDataFile, data);
     console.log("Successfully stored mapping");
   };
 }
