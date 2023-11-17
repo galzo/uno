@@ -13,3 +13,4 @@ const generateUnoFolderData = async () => {
   const folderData = await scannerService.scanAppFolder();
   await storageService.storeUnoData(folderData);
 };
+
