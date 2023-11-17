@@ -1,8 +1,15 @@
 import { Optional } from "../../types/common";
-import { BaseFileRecord } from "../folderScan/folderScannerService.types";
+import { BaseFileRecord, FileRecord } from "../folderScan/folderScannerService.types";
 import { FileFlatRecord, FolderMapping, SyncAction, SyncActionType } from "./folderDiffService.types";
+import { buildFolderMappingFromRecords } from "./folderDiffService.utils";
 
-export const generateFolderSyncActions = (source: FolderMapping, target: FolderMapping) => {
+export const generateFolderSyncActions = (sourceFolder: FileRecord[], targetFolder: FileRecord[]) => {
+  const sourceFolderMapping = buildFolderMappingFromRecords(sourceFolder);
+  const targetFolderMapping = buildFolderMappingFromRecords(targetFolder);
+  return _createSyncActions(sourceFolderMapping, targetFolderMapping);
+};
+
+export const _createSyncActions = (source: FolderMapping, target: FolderMapping) => {
   const upsertActions = _createUpsertActions(source, target);
   const deleteActions = _createDeleteActions(source, target);
   return [...upsertActions, ...deleteActions];
