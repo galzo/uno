@@ -11,8 +11,10 @@ export class UnoDataBuilder {
   }
 
   public buildUnoData = (fileRecords: ScannerFileRecord[]): UnoData => {
+    console.log("Building uno folder data...");
     const unoFileRecords = buildUnoFileRecords(fileRecords);
     const unoDataId = this.fileIdService.generateUnoDataUID(unoFileRecords);
+    console.log(`Uno data built. data uid: ${unoDataId}`);
 
     return {
       id: unoDataId,
