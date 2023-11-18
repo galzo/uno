@@ -1,7 +1,7 @@
 import { CryptoHasher } from "bun";
 import { Stats } from "fs";
-import { FileUID, FileVersionUID } from "./fileIdGeneratorService.types";
-import { FileRecord } from "../folderScan/folderScannerService.types";
+import { FileUID, FileVersionUID, UnoDataUID } from "./fileIdGeneratorService.types";
+import { ScannerFileRecord, UnoFileRecord } from "../folderScan/folderScannerService.types";
 
 export class FileIdGeneratorService {
   private cryptoHasher: CryptoHasher;
@@ -20,9 +20,18 @@ export class FileIdGeneratorService {
     return this._hashContent(versionRepr);
   };
 
+  public generateUnoDataUID = (data: UnoFileRecord[]): UnoDataUID => {
+    const dataRepr = this._buildUnoDataRepresentation(data);
+    return this._hashContent(dataRepr);
+  };
+
   private _hashContent = (content: string) => {
     this.cryptoHasher.update(content);
     return this.cryptoHasher.digest("hex");
+  };
+
+  private _buildUnoDataRepresentation = (data: UnoFileRecord[]) => {
+    return data.map((file) => `${file.id};${file.versionId}`).join(";");
   };
 
   private _buildFileUniqueRepresentation = (fileName: string, filePath: string, fileStats: Stats) => {

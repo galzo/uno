@@ -1,7 +1,7 @@
 import { hideSync } from "hidefile";
 import { exists, mkdir } from "fs/promises";
 import { AppConsts } from "../../consts/appConsts";
-import { FileRecord } from "../folderScan/folderScannerService.types";
+import { ScannerFileRecord } from "../folderScan/folderScannerService.types";
 
 export const createFolderIfNotExists = async (folderPath: string, isHidden: boolean) => {
   const isFolderExist = await exists(folderPath);

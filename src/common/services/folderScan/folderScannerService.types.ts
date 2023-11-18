@@ -1,4 +1,4 @@
-import { FileUID, FileVersionUID } from "../fileIdGenerator/fileIdGeneratorService.types";
+import { FileUID, FileVersionUID, UnoDataUID } from "../fileIdGenerator/fileIdGeneratorService.types";
 
 export interface BaseFileRecord {
   id: FileUID;
@@ -13,6 +13,6 @@ export interface BaseFileRecord {
   updatedDate: Date;
 }
 
-export interface FileRecord extends BaseFileRecord {
-  children?: FileRecord[];
+export interface ScannerFileRecord extends BaseFileRecord {
+  children?: ScannerFileRecord[];
 }

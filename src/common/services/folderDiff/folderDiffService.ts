@@ -1,11 +1,16 @@
 import { Optional } from "../../types/common";
-import { BaseFileRecord, FileRecord } from "../folderScan/folderScannerService.types";
-import { FileFlatRecord, FolderMapping, SyncAction, SyncActionType } from "./folderDiffService.types";
-import { buildFolderMappingFromRecords } from "./folderDiffService.utils";
+import { BaseFileRecord, ScannerFileRecord } from "../folderScan/folderScannerService.types";
+import { UnoData, UnoFileRecord } from "../unoData/unoDataBuilder.types";
+import { FolderMapping, SyncAction, SyncActionType } from "./folderDiffService.types";
+import { buildFolderMappingFromData } from "./folderDiffService.utils";
 
-export const generateFolderSyncActions = (sourceFolder: FileRecord[], targetFolder: FileRecord[]) => {
-  const sourceFolderMapping = buildFolderMappingFromRecords(sourceFolder);
-  const targetFolderMapping = buildFolderMappingFromRecords(targetFolder);
+export const generateFolderSyncActions = (sourceFolder: UnoData, targetFolder: UnoData) => {
+  // In case ids of data match, then the data is identical
+  const isIdMatching = sourceFolder.id === targetFolder.id;
+  if (isIdMatching) return [];
+
+  const sourceFolderMapping = buildFolderMappingFromData(sourceFolder);
+  const targetFolderMapping = buildFolderMappingFromData(targetFolder);
   return _createSyncActions(sourceFolderMapping, targetFolderMapping);
 };
 
@@ -43,7 +48,7 @@ const _createDeleteActions = (source: FolderMapping, target: FolderMapping): Syn
     });
 };
 
-const _resolveUpsertAction = (file: FileFlatRecord, targetFolder: FolderMapping): Optional<SyncActionType> => {
+const _resolveUpsertAction = (file: UnoFileRecord, targetFolder: FolderMapping): Optional<SyncActionType> => {
   const fileInTarget = targetFolder[file.id];
 
   const shouldCreateFile = !fileInTarget;

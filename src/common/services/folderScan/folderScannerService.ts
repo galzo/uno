@@ -1,8 +1,8 @@
 import { Stats } from "fs";
 import { readdir, stat } from "fs/promises";
 import { isJunk, isNotJunk } from "junk";
-import { buildFileRecord } from "./folderScannerService.utils";
-import { FileRecord } from "./folderScannerService.types";
+import { buildScannerFileRecord } from "./folderScannerService.utils";
+import { ScannerFileRecord } from "./folderScannerService.types";
 import { AppConfig } from "../configService/configService.types";
 import { isHiddenSync } from "hidefile";
 import { CryptoHasher } from "bun";
@@ -17,7 +17,7 @@ export class FolderScannerService {
     this.fileIdService = new FileIdGeneratorService();
   }
 
-  public scanAppFolder = async (): Promise<FileRecord[]> => {
+  public scanAppFolder = async (): Promise<ScannerFileRecord[]> => {
     console.log("Scanning app folder data...");
     const rootFolder = this.config.serverDataFolder;
     const folderRecords = await this.scanFolder(rootFolder);
@@ -26,8 +26,8 @@ export class FolderScannerService {
     return folderRecords;
   };
 
-  private scanFolder = async (folderPath: string): Promise<FileRecord[]> => {
-    const files: FileRecord[] = [];
+  private scanFolder = async (folderPath: string): Promise<ScannerFileRecord[]> => {
+    const files: ScannerFileRecord[] = [];
     const fileNames = await readdir(folderPath);
     const validFilesNames = fileNames.filter(isNotJunk);
 
@@ -39,7 +39,7 @@ export class FolderScannerService {
       if (isHidden) continue;
 
       const fileStats = await stat(filePath);
-      const fileRecord = buildFileRecord(fileName, filePath, fileStats, this.fileIdService);
+      const fileRecord = buildScannerFileRecord(fileName, filePath, fileStats, this.fileIdService);
 
       const shouldScanAsFolder = fileRecord.isFolder && !fileRecord.isSymlink;
       fileRecord.children = shouldScanAsFolder ? await this.scanFolder(fileRecord.path) : [];

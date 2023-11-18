@@ -3,17 +3,20 @@ import { ConfigService } from "../common/services/configService/configService";
 import { FolderScannerService } from "../common/services/folderScan/folderScannerService";
 import { UnoStorageService } from "../common/services/unoStorage/unoStorageService";
 import { AppConfig } from "../common/services/configService/configService.types";
+import { UnoDataBuilder } from "../common/services/unoData/unoDataBuilder";
 
 /**
  * TODO: move to a proper DI library, such as typedi
  */
 export class UnoServer {
   private scannerService: FolderScannerService;
+  private dataService: UnoDataBuilder;
   private storageService: UnoStorageService;
   private server?: Server;
 
   constructor(config: AppConfig) {
     this.scannerService = new FolderScannerService(config);
+    this.dataService = new UnoDataBuilder();
     this.storageService = new UnoStorageService(config);
   }
 
@@ -27,8 +30,9 @@ export class UnoServer {
   };
 
   private initializeUnoData = async () => {
-    const folderData = await this.scannerService.scanAppFolder();
-    await this.storageService.storeUnoData(folderData);
+    const files = await this.scannerService.scanAppFolder();
+    const data = this.dataService.buildUnoData(files);
+    await this.storageService.storeUnoData(data);
   };
 
   private initializeServer = (): Server => {

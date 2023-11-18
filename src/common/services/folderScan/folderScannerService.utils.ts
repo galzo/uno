@@ -1,14 +1,15 @@
 import { Stats } from "fs";
-import { FileRecord } from "./folderScannerService.types";
+import { ScannerFileRecord, UnoFileRecord } from "./folderScannerService.types";
 import { CryptoHasher } from "bun";
 import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorService";
+import { FileUID } from "../fileIdGenerator/fileIdGeneratorService.types";
 
-export const buildFileRecord = (
+export const buildScannerFileRecord = (
   name: string,
   path: string,
   stats: Stats,
   idGenerator: FileIdGeneratorService
-): FileRecord => {
+): ScannerFileRecord => {
   return {
     name: name,
     path: path,
