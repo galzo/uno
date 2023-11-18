@@ -13,11 +13,14 @@ const _resolveFileChildIds = (file: ScannerFileRecord): FileUID[] => {
 };
 
 const _buildUnoFileRecord = (fileRecord: ScannerFileRecord, parentFolderId?: FileUID): UnoFileRecord => {
-  return {
+  const record = {
     ...fileRecord,
     parentId: parentFolderId,
     directChildIds: _resolveFileChildIds(fileRecord),
   };
+
+  delete record.children;
+  return record;
 };
 
 const _flattenFileRecords = (fileRecords: ScannerFileRecord[], parentFolderId?: FileUID) => {
