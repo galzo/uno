@@ -16,8 +16,8 @@ export const buildFileRecord = (
     isFile: stats.isFile(),
     isSymlink: stats.isSymbolicLink(),
     size: stats.size,
-    versionId: idGenerator.buildFileVersionUID(name, stats),
-    id: idGenerator.buildFileUID(name, path, stats),
+    versionId: idGenerator.generateFileVersionUID(name, stats),
+    id: idGenerator.generateFileUID(name, path, stats),
     createdDate: stats.birthtime,
     updatedDate: stats.mtime,
   };

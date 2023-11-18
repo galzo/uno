@@ -11,6 +11,7 @@ import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorServic
 export class FolderScannerService {
   private config: AppConfig;
   private fileIdService: FileIdGeneratorService;
+
   constructor(config: AppConfig) {
     this.config = config;
     this.fileIdService = new FileIdGeneratorService();

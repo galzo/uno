@@ -19,7 +19,7 @@ const _flattenFileRecords = (fileRecords: FileRecord[], parentFolderId?: FileUID
   const flattenedRecords: FileFlatRecord[] = [];
 
   for (const file of fileRecords) {
-    const flatteneRec = _buildFileFlatRecord(file);
+    const flatteneRec = _buildFileFlatRecord(file, parentFolderId);
     flattenedRecords.push(flatteneRec);
 
     if (file.isFolder && file.children) {
