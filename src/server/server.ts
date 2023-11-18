@@ -1,8 +1,8 @@
 import { Server } from "bun";
-import { ConfigService } from "../services/configService/configService";
-import { FolderScannerService } from "../services/folderScan/folderScannerService";
-import { UnoStorageService } from "../services/unoStorage/unoStorageService";
-import { AppConfig } from "../services/configService/configService.types";
+import { ConfigService } from "../common/services/configService/configService";
+import { FolderScannerService } from "../common/services/folderScan/folderScannerService";
+import { UnoStorageService } from "../common/services/unoStorage/unoStorageService";
+import { AppConfig } from "../common/services/configService/configService.types";
 
 /**
  * TODO: move to a proper DI library, such as typedi

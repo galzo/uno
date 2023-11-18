@@ -1,9 +1,9 @@
-import { AppConsts } from "./consts/appConsts";
+import { AppConsts } from "./common/consts/appConsts";
 import { UnoServer } from "./server/server";
-import { ConfigService } from "./services/configService/configService";
-import { writeJsonFile } from "./services/filesStorage/fileStorageService";
-import { FolderScannerService } from "./services/folderScan/folderScannerService";
-import { UnoStorageService } from "./services/unoStorage/unoStorageService";
+import { ConfigService } from "./common/services/configService/configService";
+import { writeJsonFile } from "./common/services/filesStorage/fileStorageService";
+import { FolderScannerService } from "./common/services/folderScan/folderScannerService";
+import { UnoStorageService } from "./common/services/unoStorage/unoStorageService";
 
 const runServer = async () => {
   const configService = await ConfigService.getInstance();
