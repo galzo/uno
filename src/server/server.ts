@@ -29,6 +29,10 @@ export class UnoServer {
   private initializeUnoData = async () => {
     const files = await this.scannerService.scanAppFolder();
     const data = this.dataService.buildUnoData(files);
+
+    const shouldUpdate = await this.storageService.shouldUpdateUnoData(data);
+    if (!shouldUpdate) return;
+
     await this.storageService.storeUnoData(data);
   };
 

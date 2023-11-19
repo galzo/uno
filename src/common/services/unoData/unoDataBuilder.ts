@@ -14,11 +14,12 @@ export class UnoDataBuilder {
     console.log("Building uno folder data...");
     const unoFileRecords = buildUnoFileRecords(fileRecords);
     const unoDataId = this.fileIdService.generateUnoDataUID(unoFileRecords);
-    console.log(`Uno data built. data uid: ${unoDataId}`);
+    console.log(`Successfully build uno data`);
 
     return {
       id: unoDataId,
       files: unoFileRecords,
+      createdAt: new Date(Date.now()),
     };
   };
 }

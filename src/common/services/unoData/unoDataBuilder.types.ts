@@ -9,4 +9,5 @@ export interface UnoFileRecord extends BaseFileRecord {
 export interface UnoData {
   id: UnoDataUID;
   files: UnoFileRecord[];
+  createdAt: Date;
 }
