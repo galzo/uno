@@ -22,7 +22,7 @@ export class UnoClient {
   };
 
   private initializeUnoData = async () => {
-    const files = await this.scannerService.scanAppFolder();
+    const files = await this.scannerService.scanAppFolder("client");
     const data = this.dataService.buildUnoData(files);
     await this.storageService.storeUnoData(data);
   };
