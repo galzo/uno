@@ -27,7 +27,7 @@ const _createUpsertActions = (source: FolderMapping, target: FolderMapping): Syn
     const actionType = _resolveUpsertAction(file, target);
     if (!actionType) continue;
 
-    const action = { fileId: file.id, action: actionType };
+    const action = { fileId: file.id, actionType: actionType };
     upsertActions.push(action);
   }
 
@@ -43,7 +43,7 @@ const _createDeleteActions = (source: FolderMapping, target: FolderMapping): Syn
     .map((idToDelete) => {
       return {
         fileId: idToDelete,
-        action: "delete",
+        actionType: "delete",
       };
     });
 };

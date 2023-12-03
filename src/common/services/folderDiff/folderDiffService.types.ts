@@ -13,7 +13,7 @@ export type FolderMapping = Record<FileUID, UnoFileRecord>;
  */
 export interface SyncAction {
   fileId: FileUID;
-  action: SyncActionType;
+  actionType: SyncActionType;
 }
 
 /**
