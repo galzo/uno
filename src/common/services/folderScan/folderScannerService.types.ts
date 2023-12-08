@@ -11,6 +11,7 @@ export interface BaseFileRecord {
   size: number;
   createdDate: Date;
   updatedDate: Date;
+  treeDepth: number;
 }
 
 export interface ScannerFileRecord extends BaseFileRecord {

@@ -26,7 +26,7 @@ export class FolderScannerService {
     return folderRecords;
   };
 
-  private scanFolder = async (folderPath: string): Promise<ScannerFileRecord[]> => {
+  private scanFolder = async (folderPath: string, depth: number = 0): Promise<ScannerFileRecord[]> => {
     const files: ScannerFileRecord[] = [];
     const fileNames = await readdir(folderPath);
     const validFilesNames = fileNames.filter(isNotJunk);
@@ -39,10 +39,10 @@ export class FolderScannerService {
       if (isHidden) continue;
 
       const fileStats = await stat(filePath);
-      const fileRecord = buildScannerFileRecord(fileName, filePath, fileStats, this.fileIdService);
+      const fileRecord = buildScannerFileRecord(fileName, filePath, fileStats, depth, this.fileIdService);
 
       const shouldScanAsFolder = fileRecord.isFolder && !fileRecord.isSymlink;
-      fileRecord.children = shouldScanAsFolder ? await this.scanFolder(fileRecord.path) : [];
+      fileRecord.children = shouldScanAsFolder ? await this.scanFolder(fileRecord.path, depth + 1) : [];
 
       files.push(fileRecord);
     }

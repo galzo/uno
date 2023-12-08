@@ -1,5 +1,5 @@
 import { Stats } from "fs";
-import { ScannerFileRecord, UnoFileRecord } from "./folderScannerService.types";
+import { ScannerFileRecord } from "./folderScannerService.types";
 import { CryptoHasher } from "bun";
 import { FileIdGeneratorService } from "../fileIdGenerator/fileIdGeneratorService";
 import { FileUID } from "../fileIdGenerator/fileIdGeneratorService.types";
@@ -8,6 +8,7 @@ export const buildScannerFileRecord = (
   name: string,
   path: string,
   stats: Stats,
+  depth: number,
   idGenerator: FileIdGeneratorService
 ): ScannerFileRecord => {
   return {
@@ -21,5 +22,6 @@ export const buildScannerFileRecord = (
     id: idGenerator.generateFileUID(name, path, stats),
     createdDate: stats.birthtime,
     updatedDate: stats.mtime,
+    treeDepth: depth,
   };
 };
