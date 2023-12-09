@@ -31,8 +31,4 @@ export class FolderActionsService {
       throw new WrongActionTypeError(action, "delete");
     }
   };
-
-  private resolveFilePath = (action: SyncAction) => {
-    const fileRecord = this.appFolderData[action.fileId];
-  };
 }

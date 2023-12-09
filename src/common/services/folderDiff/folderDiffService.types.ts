@@ -14,6 +14,7 @@ export type FolderMapping = Record<FileUID, UnoFileRecord>;
 export interface SyncAction {
   fileId: FileUID;
   actionType: SyncActionType;
+  treeDepth: number;
 }
 
 /**

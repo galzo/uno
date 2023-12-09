@@ -24,10 +24,15 @@ const _createUpsertActions = (source: FolderMapping, target: FolderMapping): Syn
   const upsertActions = [];
 
   for (const file of Object.values(source)) {
-    const actionType = _resolveUpsertAction(file, target);
+    const actionType = _resolveUpsertActionType(file, target);
     if (!actionType) continue;
 
-    const action = { fileId: file.id, actionType: actionType };
+    const action: SyncAction = {
+      fileId: file.id,
+      actionType: actionType,
+      treeDepth: file.treeDepth,
+    };
+
     upsertActions.push(action);
   }
 
@@ -38,17 +43,18 @@ const _createDeleteActions = (source: FolderMapping, target: FolderMapping): Syn
   const sourceFileIds = Object.keys(source);
   const targetFileIds = Object.keys(target);
 
-  return targetFileIds
-    .filter((id) => !sourceFileIds.includes(id))
-    .map((idToDelete) => {
+  return Object.values(target)
+    .filter((targetFile) => !sourceFileIds.includes(targetFile.id))
+    .map((targetFileToDelete) => {
       return {
-        fileId: idToDelete,
+        fileId: targetFileToDelete.id,
         actionType: "delete",
+        treeDepth: targetFileToDelete.treeDepth,
       };
     });
 };
 
-const _resolveUpsertAction = (file: UnoFileRecord, targetFolder: FolderMapping): Optional<SyncActionType> => {
+const _resolveUpsertActionType = (file: UnoFileRecord, targetFolder: FolderMapping): Optional<SyncActionType> => {
   const fileInTarget = targetFolder[file.id];
 
   const shouldCreateFile = !fileInTarget;
