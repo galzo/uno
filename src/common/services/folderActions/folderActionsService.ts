@@ -30,5 +30,13 @@ export class FolderActionsService {
     if (action.actionType !== "delete") {
       throw new WrongActionTypeError(action, "delete");
     }
+
+    const targetFile = this.resolveFileDetailsForAction(action);
+    if (targetFile.isFolder) {
+    }
+  };
+
+  private resolveFileDetailsForAction = (action: SyncAction) => {
+    return this.appFolderData[action.fileId];
   };
 }
