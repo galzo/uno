@@ -3,7 +3,7 @@ import { AppConfig } from "../configService/configService.types";
 import { FolderMapping, SyncAction } from "../folderDiff/folderDiffService.types";
 import { UnoData } from "../unoData/unoDataBuilder.types";
 import { UnoStorageService } from "../unoStorage/unoStorageService";
-import { unlink } from "fs/promises";
+import { unlink, rm } from "fs/promises";
 
 export class FolderActionsService {
   private config: AppConfig;
@@ -32,8 +32,7 @@ export class FolderActionsService {
     }
 
     const targetFile = this.resolveFileDetailsForAction(action);
-    if (targetFile.isFolder) {
-    }
+    await rm(targetFile.path);
   };
 
   private resolveFileDetailsForAction = (action: SyncAction) => {
