@@ -4,7 +4,6 @@ import { FolderScannerService } from "../common/services/folderScan/folderScanne
 import { UnoStorageService } from "../common/services/unoStorage/unoStorageService";
 import { AppConfig } from "../common/services/configService/configService.types";
 import { UnoDataBuilder } from "../common/services/unoData/unoDataBuilder";
-import { router } from "./router";
 import express, { Application } from "express";
 
 /**
@@ -31,7 +30,7 @@ export class UnoServer {
   public stop = () => {};
 
   private initializeUnoData = async () => {
-    const files = await this.scannerService.scanAppFolder("server");
+    const files = await this.scannerService.scanAppFolder();
     const data = this.dataService.buildUnoData(files);
 
     const shouldUpdate = await this.storageService.shouldUpdateUnoData(data);

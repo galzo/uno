@@ -14,7 +14,7 @@ export class UnoStorageService {
   private backupFolderPath: string;
 
   constructor(config: AppConfig) {
-    const unoFolderPath = `${config.serverDataFolder}/${AppConsts.unoDataFolder}`;
+    const unoFolderPath = `${config.appFolder}/${AppConsts.unoDataFolder}`;
     this.dataFolderPath = unoFolderPath;
     this.backupFolderPath = `${unoFolderPath}/${AppConsts.unoBackupFolder}`;
   }
