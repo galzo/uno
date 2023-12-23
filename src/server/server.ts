@@ -5,11 +5,14 @@ import { UnoStorageService } from "../common/services/unoStorage/unoStorageServi
 import { AppConfig } from "../common/services/configService/configService.types";
 import { UnoDataBuilder } from "../common/services/unoData/unoDataBuilder";
 import { router } from "./router";
+import express, { Application } from "express";
 
 /**
  * TODO: move to a proper DI library, such as typedi
  */
 export class UnoServer {
+  private server: Application;
+
   private scannerService: FolderScannerService;
   private dataService: UnoDataBuilder;
   private storageService: UnoStorageService;
@@ -18,6 +21,7 @@ export class UnoServer {
     this.scannerService = new FolderScannerService(config);
     this.dataService = new UnoDataBuilder();
     this.storageService = new UnoStorageService(config);
+    this.server = express();
   }
 
   public initialize = async () => {
